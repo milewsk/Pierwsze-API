@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Pierwsze_API.Models;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 
 namespace Pierwsze_API.Pages
@@ -22,10 +24,13 @@ namespace Pierwsze_API.Pages
 
         public IActionResult OnPost()
         {
-            if(!ModelState.IsValid)
-            { return Page(); }
+            if(ModelState.IsValid)
+            {
+                HttpContext.Session.SetString("SessionAddress", JsonConvert.SerializeObject(Address));
+                return RedirectToPage("./Address");
+            }
 
-            return RedirectToPage("./Privacy");
+            return Page();
         }
 
         public IndexModel(ILogger<IndexModel> logger)
